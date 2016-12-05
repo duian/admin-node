@@ -8,5 +8,5 @@ COPY . /src
 
 RUN npm run build
 
-EXPOSE 7010
-CMD node server.js
+EXPOSE 9090
+CMD node index.js
