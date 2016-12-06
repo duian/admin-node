@@ -39,11 +39,13 @@ exports.load = (req, res, next, id) => {
 exports.index = (req, res) => {
   const { query } = req;
   const params = {};
+  // 名字或者职位
+  let title;
   if (query.name) {
     params.name = query.name.trim();
   }
   if (query.title) {
-    params.title = query.title.trim();
+    title = query.title.trim();
   }
   if (query.team) {
     params.team = query.team.trim();
@@ -65,6 +67,7 @@ exports.index = (req, res) => {
 
   const options = {
     params,
+    title,
     page,
     limit,
   };

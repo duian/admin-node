@@ -49,11 +49,12 @@ MemberSchema.statics = {
 
   list(options) {
     const params = options.params || {};
+    const title = new RegExp(options.title) || new RegExp('');
+    // params.title = title;
     const page = options.page || 0;
     const limit = options.limit || 50;
-    // console.log('params', params);
     return this.find(params)
-    // return this.find()
+    .or([{ title }, { name: title }])
     .limit(limit)
     .skip(limit * page)
     .lean()
