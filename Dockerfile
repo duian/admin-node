@@ -6,7 +6,5 @@ RUN npm install
 
 COPY . /src
 
-RUN npm run server
-
 EXPOSE 9090
-CMD node index.js
+CMD npm run server
