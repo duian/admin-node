@@ -60,12 +60,24 @@ MemberSchema.statics = {
     .limit(limit)
     .skip(limit * page)
     .lean()
-    .exec((err, data) => (
-      data.map((record, index) => {
+    .exec((err, data) => {
+      return data.map((record, index) => {
         record.index = index + 1;
         return record;
-      })
-    ));
+      });
+    });
+  },
+
+  count(options) {
+    const params = options.params || {};
+    const title = new RegExp(options.title) || new RegExp('');
+    // params.title = title;
+    return this.find(params)
+    .or([{ title }, { name: title }])
+    .lean()
+    .exec((err, data) => {
+      return data.length;
+    });
   },
 };
 
