@@ -2,15 +2,6 @@ const mongoose = require('mongoose');
 // const Product = require('../models/product');
 // require('../models/product');
 const Member = mongoose.model('member');
-function removeEmptyProperty(obj) {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === undefined || obj[key] === null || obj[key] === '') {
-      delete obj[key];
-    }
-  });
-
-  return obj;
-}
 
 function handleBodyParam(body) {
   const name = body.name ? body.name.trim() : '';
@@ -52,12 +43,12 @@ exports.index = (req, res) => {
   const status = req.query.status ? parseInt(req.query.status, 10) : 0;
   const page = req.query.pageNo ? parseInt(req.query.pageNo, 10) - 1 : 0;
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 100;
-  const params = removeEmptyProperty({
+  const params = {
     name,
     title,
     team,
     status,
-  });
+  };
 
   const options = {
     params,

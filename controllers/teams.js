@@ -2,15 +2,6 @@ const mongoose = require('mongoose');
 // const Product = require('../models/product');
 // require('../models/product');
 const Team = mongoose.model('team');
-function removeEmptyProperty(obj) {
-  Object.keys(obj).forEach((key) => {
-    if (obj[key] === undefined || obj[key] === null || obj[key] === '') {
-      delete obj[key];
-    }
-  });
-
-  return obj;
-}
 
 function handleBodyParam(body) {
   console.log(body);
@@ -40,10 +31,10 @@ exports.index = (req, res) => {
   //const code = req.query.code.trim();
   const page = parseInt(req.query.page, 10) - 1;
   const limit = parseInt(req.query.limit, 10);
-  const params = removeEmptyProperty({
+  const params = {
     memref,
     name,
-  });
+  };
   const options = {
     params,
     page,

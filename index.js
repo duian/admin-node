@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
 const cors = require('./middlewares/cors');
+const filterParams = require('./middlewares/filterParams');
 const db = mongoose.connection;
 const models = join(__dirname, './models');
 fs.readdirSync(models)
@@ -26,6 +27,7 @@ app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors);
+app.use(filterParams);
 
 app.use(express.static('public'));
 
