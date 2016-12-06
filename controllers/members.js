@@ -45,7 +45,7 @@ exports.load = (req, res, next, id) => {
   });
 };
 
-exports.index2 = (req, res) => {
+exports.index = (req, res) => {
   const name = req.query.name ? req.query.name.trim() : '';
   const title = req.query.title ? req.query.title.trim() : '';
   const team = req.query.team ? req.query.team.trim() : '';
@@ -102,7 +102,7 @@ exports.create = (req, res) => {
 };
 
 
-exports.index = (req, res) => {
+exports.index2 = (req, res) => {
   const body = req.body;
   const options = handleBodyParam(body);
 
