@@ -50,22 +50,15 @@ exports.index = (req, res) => {
   const title = req.query.title ? req.query.title.trim() : '';
   const team = req.query.team ? req.query.team.trim() : '';
   const status = req.query.status ? parseInt(req.query.status, 10) : 0;
-  const publish_time = req.query.publish_time;
-  const photo_url = req.query.photo_url ? req.query.photo_url.trim() : '';
-  // const password = req.query.password;
-  const order = req.query.order ? parseInt(req.query.order, 10) : 0;
   const page = req.query.pageNo ? parseInt(req.query.pageNo, 10) - 1 : 0;
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 100;
   const params = removeEmptyProperty({
     name,
     title,
     team,
-    // status,
-    publish_time,
-    photo_url,
-    // password,
-    // order,
+    status,
   });
+
   const options = {
     params,
     page,
