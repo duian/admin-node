@@ -10,8 +10,6 @@ function removeEmptyProperty(obj) {
 
 module.exports = function filterParam(req, res, next) {
   const { query } = req;
-  console.log('before', query);
   req.query = removeEmptyProperty(query);
-  console.log('after', req.query);
   next();
 };

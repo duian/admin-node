@@ -37,18 +37,31 @@ exports.load = (req, res, next, id) => {
 };
 
 exports.index = (req, res) => {
-  const name = req.query.name ? req.query.name.trim() : '';
-  const title = req.query.title ? req.query.title.trim() : '';
-  const team = req.query.team ? req.query.team.trim() : '';
-  const status = req.query.status ? parseInt(req.query.status, 10) : 0;
+  const { query } = req;
+  const params = {};
+  if (query.name) {
+    params.name = query.name.trim();
+  }
+  if (query.title) {
+    params.title = query.title.trim();
+  }
+  if (query.team) {
+    params.team = query.team.trim();
+  }
+  if (query.status) {
+    params.status = parseInt(query.status, 10);
+  }
+  // const title = req.query.title ? req.query.title.trim() : '';
+  // const team = req.query.team ? req.query.team.trim() : '';
+  // const status = req.query.status ? parseInt(req.query.status, 10) : 0;
   const page = req.query.pageNo ? parseInt(req.query.pageNo, 10) - 1 : 0;
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 100;
-  const params = {
-    name,
-    title,
-    team,
-    status,
-  };
+  // const params = {
+  //   name,
+  //   title,
+  //   team,
+  //   status,
+  // };
 
   const options = {
     params,

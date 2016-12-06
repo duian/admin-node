@@ -51,8 +51,9 @@ MemberSchema.statics = {
     const params = options.params || {};
     const page = options.page || 0;
     const limit = options.limit || 50;
-    console.log('params', params);
+    // console.log('params', params);
     return this.find(params)
+    // return this.find()
     .limit(limit)
     .skip(limit * page)
     .lean()

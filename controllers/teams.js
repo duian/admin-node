@@ -4,13 +4,16 @@ const mongoose = require('mongoose');
 const Team = mongoose.model('team');
 
 function handleBodyParam(body) {
-  console.log(body);
-  const name = body.name ? body.name.trim() : '';
-  const memref = body.memref;
-  return {
-    name,
-    memref,
-  };
+  const options = {};
+  if (body.name) {
+    options.name = body.name.trim();
+  }
+  if (body.memref) {
+    options.memref = body.memref;
+  }
+  // const name = body.name ? body.name.trim() : '';
+  // const memref = body.memref;
+  return options;
 }
 
 exports.load = (req, res, next, id) => {
@@ -26,15 +29,15 @@ exports.load = (req, res, next, id) => {
 };
 
 exports.index = (req, res) => {
-  const memref = req.query.memref;
-  const name = req.query.name?req.query.name.trim():'';
-  //const code = req.query.code.trim();
+  const { query } = req;
+  const params = {};
+  // const memref = req.query.memref;
+  // const name = req.query.name?req.query.name.trim():'';
+  if (query.name) {
+    params.name = query.name.trim();
+  }
   const page = parseInt(req.query.page, 10) - 1;
   const limit = parseInt(req.query.limit, 10);
-  const params = {
-    memref,
-    name,
-  };
   const options = {
     params,
     page,

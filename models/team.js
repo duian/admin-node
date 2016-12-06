@@ -16,6 +16,7 @@ TeamSchema.statics = {
     const params = options.params || {};
     const page = options.page || 0;
     const limit = options.limit || 50;
+    console.log('team params', params);
     return this.find(params)
     // .limit(limit)
     // .skip(limit * page)

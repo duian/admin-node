@@ -44,7 +44,6 @@ app.post('/api/member', members.create);
 app.put('/api/member/:id', members.update);
 
 app.get('/api/team', (req, res) => {
-  console.log('res', req.headers);
   teams.index(req, res);
 });
 
