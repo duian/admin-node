@@ -20,6 +20,8 @@ db.on('error', console.error);
 db.once('open', () => {
   console.log('connect');
 });
+
+console.log('++++++++++++++++++', precess.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   mongoose.connect('mongodb://' + process.env.MONGODB_HOST + ':' + process.env.MONGODB_PORT);
 } else {
