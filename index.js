@@ -20,7 +20,11 @@ db.on('error', console.error);
 db.once('open', () => {
   console.log('connect');
 });
-mongoose.connect('mongodb://localhost/news');
+if (process.env.NODE_ENV === 'production') {
+  mongoose.connect('mongodb://' + process.env.MONGODB_HOST + ':' + process.env.MONGODB_PORT);
+} else {
+  mongoose.connect('mongodb://localhost/news');
+}
 
 app.use(cookieParser());
 app.use(bodyParser.raw());
