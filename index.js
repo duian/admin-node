@@ -16,6 +16,7 @@ fs.readdirSync(models)
 //const news = require('./controllers/news');
 const teams = require('./controllers/teams');
 const members = require('./controllers/members');
+const clients = require('./controllers/clients');
 db.on('error', console.error);
 db.once('open', () => {
   console.log('connect');
@@ -56,6 +57,20 @@ app.get('/api/team', (req, res) => {
 app.post('/api/team', teams.create);
 
 app.put('/api/team/:id', teams.update);
+
+app.param('id', clients.load);
+
+app.get('/api/client', clients.index);
+app.post('/api/client', clients.create);
+app.put('/api/client/:id', clients.update);
+
+
+app.param('id', news.load);
+
+app.get('/api/news', news.index);
+app.post('/api/news', news.create);
+app.put('/api/news/:id', news.update);
+
 
 /*
 app.get('/api/client', (req, res) => {
