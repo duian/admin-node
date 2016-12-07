@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 
 const Schema = mongoose.Schema;
 const MemberSchema = new Schema({
@@ -49,20 +51,33 @@ MemberSchema.statics = {
 
   list(options) {
     const params = options.params || {};
+    const title = new RegExp(options.title) || new RegExp('');
+    // params.title = title;
     const page = options.page || 0;
     const limit = options.limit || 50;
-    // console.log('params', params);
     return this.find(params)
-    // return this.find()
+    .or([{ title }, { name: title }])
     .limit(limit)
     .skip(limit * page)
     .lean()
-    .exec((err, data) => (
-      data.map((record, index) => {
+    .exec((err, data) => {
+      return data.map((record, index) => {
         record.index = index + 1;
         return record;
-      })
-    ));
+      });
+    });
+  },
+
+  count(options) {
+    const params = options.params || {};
+    const title = new RegExp(options.title) || new RegExp('');
+    // params.title = title;
+    return this.find(params)
+    .or([{ title }, { name: title }])
+    .lean()
+    .exec((err, data) => {
+      return data.length;
+    });
   },
 };
 

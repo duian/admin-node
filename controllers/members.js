@@ -39,23 +39,23 @@ exports.load = (req, res, next, id) => {
 exports.index = (req, res) => {
   const { query } = req;
   const params = {};
+  // 名字或者职位
+  let title;
   if (query.name) {
-    params.name = query.name.trim();
+    params.name = new RegExp(query.name.trim());
   }
   if (query.title) {
-    params.title = query.title.trim();
+    title = query.title.trim();
   }
   if (query.team) {
-    params.team = query.team.trim();
+    params.team = new RegExp(query.team.trim());
   }
   if (query.status) {
     params.status = parseInt(query.status, 10);
   }
-  // const title = req.query.title ? req.query.title.trim() : '';
-  // const team = req.query.team ? req.query.team.trim() : '';
-  // const status = req.query.status ? parseInt(req.query.status, 10) : 0;
+
   const page = req.query.pageNo ? parseInt(req.query.pageNo, 10) - 1 : 0;
-  const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 100;
+  const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 50;
   // const params = {
   //   name,
   //   title,
@@ -65,17 +65,25 @@ exports.index = (req, res) => {
 
   const options = {
     params,
+    title,
     page,
     limit,
   };
   Member.list(options)
   .then((data) => {
-    const length = data.length;
-    const records = data;
-    res.send({
-      length,
-      records,
-    });
+    Member.count(options)
+    .then(all => (
+      res.send({
+        records: data,
+        length: all.length,
+      })
+    ));
+    // const length = data.length;
+    // const records = data;
+    // res.send({
+    //   length,
+    //   records,
+    // });
   });
 };
 
