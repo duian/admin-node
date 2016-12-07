@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
-const NewsSchema = new Schema({
-  title: { type: String, default: '' },
-  type: { type: String },
-  cover: { type: String, default: '', trim: true },
-  label: { type: String, default: '', trim: true },
-  link: { type: String, default: '', trim: true },
-  content: { type: String, default: '' },
-  publish_time: { type: Date, default: Date.now },
+const Schema = mongoose.Schema;
+const ClientSchema = new Schema({
+  company: { type: String, required: true, trim: true },
+  business: { type: String, default: '', trim: true },
+  service: { type: String, default: '', trim: true },
+  logo: { type: String, default: '', trim: true },
+  brief: { type: String, default: '', trim: true },
+  project: {  type: String, default: '', trim: true },
   status: { type: Number, default: 0 },
-  referal: { type: Number, default: 0 },
+  publish_time: { type: Date, default: Date.now },
+  order: { type: Number, default: 0 },
 });
 
-NewsSchema.statics = {
+
+ClientSchema.statics = {
   load(_id) {
     return this.findOne({ _id })
     .exec();
@@ -38,5 +39,4 @@ NewsSchema.statics = {
   },
 };
 
-
-mongoose.model('news', NewsSchema);
+mongoose.model('client', ClientSchema);
