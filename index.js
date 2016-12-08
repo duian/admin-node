@@ -13,7 +13,7 @@ fs.readdirSync(models)
   .filter(file => ~file.search(/^[^\.].*\.js$/))
   .forEach(file => require(join(models, file)));
 
-//const news = require('./controllers/news');
+const news = require('./controllers/news');
 const teams = require('./controllers/teams');
 const members = require('./controllers/members');
 const clients = require('./controllers/clients');
