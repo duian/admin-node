@@ -29,6 +29,7 @@
   "dependencies": {
     "bcrypt": "^0.8.7",
     "bluebird": "^3.4.6",
+    "blueimp-file-upload-expressjs": "arvindr21/blueimp-file-upload-expressjs",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",

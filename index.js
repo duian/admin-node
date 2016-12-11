@@ -7,6 +7,35 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const cors = require('./middlewares/cors');
 const filterParams = require('./middlewares/filterParams');
+var options = {
+    tmpDir:  join(__dirname, '/public/uploads/tmp'),
+    uploadDir: join(__dirname, '/public/uploads/'),
+    uploadUrl:  '/uploads/',
+    maxPostSize: 11000000000, // 11 GB
+    minFileSize:  1,
+    maxFileSize:  10000000000, // 10 GB
+    acceptFileTypes:  /.+/i,
+    // Files not matched by this regular expression force a download dialog,
+    // to prevent executing any scripts in the context of the service domain:
+    inlineFileTypes:  /\.(gif|jpe?g|png)/i,
+    imageTypes:  /\.(gif|jpe?g|png)/i,
+    copyImgAsThumb : true, // required
+    imageVersions :{
+        maxWidth : 200,
+        maxHeight : 200
+    },
+    accessControl: {
+        allowOrigin: '*',
+        allowMethods: 'OPTIONS, HEAD, GET, POST, PUT, DELETE',
+        allowHeaders: 'Content-Type, Content-Range, Content-Disposition'
+    },
+    storage : {
+        type : 'local',
+    },
+};
+
+// init the uploader
+var uploader = require('blueimp-file-upload-expressjs')(options);
 const multer  = require('multer')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -54,13 +83,23 @@ app.post('/api/user', (req, res) => {
   });
 });
 
-app.post('/api/upload',upload.any(), function(req, res, next) {
-  const { files } = req;
-  const file = files[0];
-  // file.url
-  console.log('req', req.headers.host);
-  res.send({ status: true });
-})
+// app.post('/api/upload',upload.any(), function(req, res, next) {
+//   const { files } = req;
+//   const file = files[0];
+//   // file.url
+//   console.log('req', req.headers.host);
+
+//   res.send({ status: true });
+// });
+app.post('/api/upload', function(req, res) {
+  uploader.post(req, res, function (error, obj, redirect) {
+      if(!error) {
+        obj.status = true;
+        res.send(JSON.stringify(obj));
+      }
+  });
+
+});
 // app.param('id', members.load);
 
 app.get('/api/member', members.index);
