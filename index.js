@@ -7,6 +7,17 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const cors = require('./middlewares/cors');
 const filterParams = require('./middlewares/filterParams');
+const multer  = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, join(__dirname, '/public/uploads'));
+  },
+  filename: function (req, file, cb) {
+    const suffix = file.originalname.split('.')[file.originalname.split('.').length - 1];
+    cb(null, file.fieldname + '-' + Date.now() + '.' + suffix);
+  }
+});
+const upload = multer({ storage })
 const db = mongoose.connection;
 const models = join(__dirname, './models');
 fs.readdirSync(models)
@@ -22,7 +33,6 @@ db.once('open', () => {
   console.log('connect');
 });
 
-console.log('++++++++++++++++++', process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
   mongoose.connect('mongodb://' + process.env.MONGODB_HOST + ':' + process.env.MONGODB_PORT);
 } else {
@@ -44,7 +54,14 @@ app.post('/api/user', (req, res) => {
   });
 });
 
-app.param('id', members.load);
+app.post('/api/upload',upload.any(), function(req, res, next) {
+  const { files } = req;
+  const file = files[0];
+  // file.url
+  console.log('req', req.headers.host);
+  res.send({ status: true });
+})
+// app.param('id', members.load);
 
 app.get('/api/member', members.index);
 app.post('/api/member', members.create);
