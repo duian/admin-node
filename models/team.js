@@ -6,6 +6,17 @@ const TeamSchema = new Schema({
   members: [{ type: Schema.Types.ObjectId, ref: 'Member' }],
 });
 
+TeamSchema.pre('save', function cb(next) {
+  const now = new Date();
+  // console.log('pre save', this);
+  this.updated_at = now;
+  if (!this.created_at) {
+    this.created_at = now;
+  }
+  // console.log('pre save', this, now);
+  next();
+});
+
 TeamSchema.statics = {
   load(_id) {
     return this.findOne({ _id })

@@ -57,9 +57,7 @@ exports.index = (req, res) => {
 exports.create = (req, res) => {
   const body = req.body;
   const options = handleBodyParam(body);
-//  console.log(options);
   const team = new Team(options);
-  console.log('access team');
   team.save((err, result) => {
     if (err) {
       res.send({ err });

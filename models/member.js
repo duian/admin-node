@@ -15,7 +15,15 @@ const MemberSchema = new Schema({
 });
 
 MemberSchema.pre('save', function(next) {
+  // 创建时间和修改时间
+  const now = new Date();
+  this.updated_at = now;
+  if (!this.created_at) {
+    this.created_at = now;
+  }
+  next();
     var user = this;
+
 
     // only hash the password if it has been modified (or is new)
     if (!user.isModified('password')) return next();
