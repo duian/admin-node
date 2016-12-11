@@ -7,7 +7,7 @@ function handleBodyParam(body) {
   const name = body.name ? body.name.trim() : '';
   const title = body.title ? body.title.trim() : '';
   const team = body.team ? body.team.trim() : '';
-  const status = body.status ? parseInt(body.count, 10) : 0;
+  const status = body.status ? parseInt(body.status, 10) : 0;
   const publish_time = body.publish_time;
   const photo_url = body.photo_url ? body.photo_url.trim() : '';
   const password = body.password ? body.password : 1;

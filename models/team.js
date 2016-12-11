@@ -8,12 +8,10 @@ const TeamSchema = new Schema({
 
 TeamSchema.pre('save', function cb(next) {
   const now = new Date();
-  // console.log('pre save', this);
   this.updated_at = now;
   if (!this.created_at) {
     this.created_at = now;
   }
-  // console.log('pre save', this, now);
   next();
 });
 

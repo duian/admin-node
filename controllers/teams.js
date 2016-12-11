@@ -57,6 +57,12 @@ exports.index = (req, res) => {
 exports.create = (req, res) => {
   const body = req.body;
   const options = handleBodyParam(body);
+  console.log('options', options);
+  const query = Team.find({});
+
+  query.exec().then((err, result) => (
+    console.log('result', result.length)
+  ));
   const team = new Team(options);
   team.save((err, result) => {
     if (err) {
@@ -70,7 +76,7 @@ exports.get = (req, res) => {
   const body = req.body;
   const options = handleBodyParam(body);
 
-  Team.find({name: {"$regex": options.name}}, function(err, team) {
+  Team.find({name: new RegExp(options.name)}, function(err, team) {
     if (err) throw err;
 
     res.send(team);
