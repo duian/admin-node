@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 // const Product = require('../models/product');
 // require('../models/product');
 const Client = mongoose.model('client');
+const createFactory = require('./factories').createFactory;
+const detailFactory = require('./factories').detailFactory;
 
 function handleBodyParam(body) {
   const company = body.company ? body.company.trim() : '';
@@ -78,25 +80,8 @@ exports.index = (req, res) => {
   });
 };
 
-exports.create = (req, res) => {
-  const body = req.body;
-  const options = handleBodyParam(body);
-  const client = new Client(options);
-  var promise = Client.find({},function(err,result){
-    size = result.length;
-    client.order = size+1;
-  }).exec();
-  promise.then(() => {
-    client.save((err, result) =>{
-      // console.log('mem:', member, err);
-      if (err) {
-        return res.send({ err });
-      }
-      return res.send({ status: true, result });
-    })
-  });
-};
-
+exports.create = createFactory(Client);
+exports.detail = detailFactory(Client);
 
 exports.update = (req, res) => {
   const body = req.body;

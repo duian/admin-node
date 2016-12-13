@@ -5,7 +5,7 @@ const ClientSchema = new Schema({
   company: { type: String, required: true, trim: true },
   business: { type: String, default: '', trim: true },
   service: { type: String, default: '', trim: true },
-  logo: { type: String, default: '', trim: true },
+  logo: { type: Array, default: [] },
   brief: { type: String, default: '', trim: true },
   project: {  type: String, default: '', trim: true },
   status: { type: Number, default: 0 },

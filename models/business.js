@@ -23,4 +23,4 @@ const BusinessSchema = new Schema({
 //   client: [{ type: Schema.Types.ObjectId, ref: 'Client'}]
 // });
 
-mongoose.model('bussiness', BusinessSchema);
+mongoose.model('business', BusinessSchema);
