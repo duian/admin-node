@@ -36,3 +36,5 @@ sftp-config.json
 
 # build file
 build/
+
+public/
