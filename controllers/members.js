@@ -9,7 +9,7 @@ function handleBodyParam(body) {
   const team = body.team ? body.team.trim() : '';
   const status = body.status ? parseInt(body.status, 10) : 0;
   const publish_time = body.publish_time;
-  const photo_url = body.photo_url ? body.photo_url.trim() : '';
+  const logo = body.logo ? body.logo : '';
   const password = body.password ? body.password : 1;
   const order = body.cost ? parseInt(body.cost, 10) : 0;
   return {
@@ -18,7 +18,7 @@ function handleBodyParam(body) {
     team,
     status,
     publish_time,
-    photo_url,
+    logo,
     password,
     order,
   };
@@ -56,12 +56,6 @@ exports.index = (req, res) => {
 
   const page = req.query.pageNo ? parseInt(req.query.pageNo, 10) - 1 : 0;
   const limit = req.query.pageSize ? parseInt(req.query.pageSize, 10) : 50;
-  // const params = {
-  //   name,
-  //   title,
-  //   team,
-  //   status,
-  // };
 
   const options = {
     params,
@@ -91,18 +85,17 @@ exports.create = (req, res) => {
   const body = req.body;
   const options = handleBodyParam(body);
   const member = new Member(options);
-  var promise = Member.find({},function(err,mem){
-    size = mem.length;
-    member.order = size+1;
+  const promise = Member.find({}, (err, mem) => {
+    const size = mem.length;
+    member.order = size + 1;
   }).exec();
   promise.then(() => {
-    member.save((err, result) =>{
-      // console.log('mem:', member, err);
+    member.save((err, result) => {
       if (err) {
         return res.send({ err });
       }
       return res.send({ status: true, result });
-    })
+    });
   });
 };
 

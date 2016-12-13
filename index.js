@@ -33,20 +33,8 @@ var options = {
         type : 'local',
     },
 };
+const uploader = require('blueimp-file-upload-expressjs')(options);
 
-// init the uploader
-var uploader = require('blueimp-file-upload-expressjs')(options);
-const multer  = require('multer')
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, join(__dirname, '/public/uploads'));
-  },
-  filename: function (req, file, cb) {
-    const suffix = file.originalname.split('.')[file.originalname.split('.').length - 1];
-    cb(null, file.fieldname + '-' + Date.now() + '.' + suffix);
-  }
-});
-const upload = multer({ storage })
 const db = mongoose.connection;
 const models = join(__dirname, './models');
 fs.readdirSync(models)
@@ -83,14 +71,6 @@ app.post('/api/user', (req, res) => {
   });
 });
 
-// app.post('/api/upload',upload.any(), function(req, res, next) {
-//   const { files } = req;
-//   const file = files[0];
-//   // file.url
-//   console.log('req', req.headers.host);
-
-//   res.send({ status: true });
-// });
 app.post('/api/upload', function(req, res) {
   uploader.post(req, res, function (error, obj, redirect) {
       if(!error) {
@@ -106,15 +86,10 @@ app.get('/api/member', members.index);
 app.post('/api/member', members.create);
 app.put('/api/member/:id', members.update);
 
-app.get('/api/team', (req, res) => {
-  teams.index(req, res);
-});
-
+app.get('/api/team', teams.index);
 app.post('/api/team', teams.create);
-
 app.put('/api/team/:id', teams.update);
-
-app.param('id', clients.load);
+// app.param('id', clients.load);
 
 app.get('/api/client', clients.index);
 app.post('/api/client', clients.create);

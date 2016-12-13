@@ -9,7 +9,7 @@ const MemberSchema = new Schema({
   team: { type: String, required: true },
   status: { type: Number, default: 0 },
   order: { type: Number, default: 0 },
-  photo_url: { type: String, default: '', trim: true },
+  logo: { type: Array, default: [] },
   password: { type: String },
   publish_time: { type: Date, default: Date.now },
 });
