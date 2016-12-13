@@ -26,17 +26,17 @@ function handleBodyParam(body) {
   };
 }
 
-exports.load = (req, res, next, id) => {
-  news.load(id).then((data) => {
-    try {
-      req.news = data;
-      if (!req.news) return next(new Error('NewsSchema not found'));
-    } catch (err) {
-      return next(err);
-    }
-    return next();
-  });
-};
+// exports.load = (req, res, next, id) => {
+//   news.load(id).then((data) => {
+//     try {
+//       req.news = data;
+//       if (!req.news) return next(new Error('NewsSchema not found'));
+//     } catch (err) {
+//       return next(err);
+//     }
+//     return next();
+//   });
+// };
 
 exports.index = (req, res) => {
   const { query } = req;

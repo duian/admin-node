@@ -83,8 +83,11 @@ app.post('/api/upload', function(req, res) {
 // app.param('id', members.load);
 
 app.get('/api/member', members.index);
+app.get('/api/member/:id', members.detail);
 app.post('/api/member', members.create);
 app.put('/api/member/:id', members.update);
+app.post('/api/member/:id/upward', members.upward);
+app.post('/api/member/:id/downward', members.downward);
 
 app.get('/api/team', teams.index);
 app.post('/api/team', teams.create);
@@ -96,7 +99,7 @@ app.post('/api/client', clients.create);
 app.put('/api/client/:id', clients.update);
 
 
-app.param('id', news.load);
+// app.param('id', news.load);
 
 app.get('/api/news', news.index);
 app.post('/api/news', news.create);

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 // const Product = require('../models/product');
 // require('../models/product');
 const Member = mongoose.model('member');
+const filterObj = require('./utils').filterObj;
 
 function handleBodyParam(body) {
   const name = body.name ? body.name.trim() : '';
@@ -81,6 +82,16 @@ exports.index = (req, res) => {
   });
 };
 
+exports.detail = (req, res) => {
+  const memberId = req.params.id;
+  Member.findOne({_id: memberId}, (err, result) => {
+    if (err) {
+      return res.send({status: false, err});
+    }
+    return res.send({status: true, result});
+  });
+};
+
 exports.create = (req, res) => {
   const body = req.body;
   const options = handleBodyParam(body);
@@ -92,7 +103,7 @@ exports.create = (req, res) => {
   promise.then(() => {
     member.save((err, result) => {
       if (err) {
-        return res.send({ err });
+        return res.send({status: false, err });
       }
       return res.send({ status: true, result });
     });
@@ -124,15 +135,78 @@ exports.index2 = (req, res) => {
 
 exports.update = (req, res) => {
   const body = req.body;
-  const options = handleBodyParam(body);
-  const member = Object.assign(req.member, options);
-  member.save((err, result) => {
+  const options = filterObj(body);
+  const memberId = req.params.id;
+  Member.findOneAndUpdate({_id: memberId}, options, {new: true}, (err, result) => {
     if (err) {
-      res.send({ err });
+      return res.send({status: false, err});
     }
-    res.send({ status: true, result });
+    return res.send({status: true, result});
   });
 };
+
+exports.upward = (req, res) => {
+  const memberId = req.params.id;
+  Member.findOne({_id: memberId}, (err, member) => {
+    if (err) {
+      return res.send({status: false, err});
+    }
+    Member.find({}).sort({order: -1}).findOne({order: {$lt: member.order}}, (err, prevMember) => {
+      if (err) {
+        return res.send({status: false, err});
+      }
+      if (!prevMember) {
+        return res.send({status: true});
+      }
+      const prevMemberOrder = prevMember.order;
+      prevMember.order = member.order;
+      prevMember.save((err) => {
+        if (err) {
+          return res.send({status: false, err});
+        }
+        member.order = prevMemberOrder;
+        member.save((err) => {
+          if (err) {
+            return res.send({status: false, err});
+          }
+          return res.send({status: true});
+        });
+      });
+    });
+  });
+};
+
+exports.downward = (req, res) => {
+  const memberId = req.params.id;
+  Member.findOne({_id: memberId}, (err, member) => {
+    if (err) {
+      return res.send({status: false, err});
+    }
+    Member.find({}).sort({order: 1}).findOne({order: {$gt: member.order}}, (err, nextMember) => {
+      if (err) {
+        return res.send({status: false, err});
+      }
+      if (!nextMember) {
+        return res.send({status: true});
+      }
+      const nextMemberOrder = nextMember.order;
+      nextMember.order = member.order;
+      nextMember.save((err) => {
+        if (err) {
+          return res.send({status: false, err});
+        }
+        member.order = nextMemberOrder;
+        member.save((err) => {
+          if (err) {
+            return res.send({status: false, err});
+          }
+          return res.send({status: true});
+        });
+      });
+    });
+  });
+};
+
 /*
 exports.destroy = (req, res) => {
   const product = req.product;

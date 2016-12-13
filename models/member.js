@@ -65,6 +65,7 @@ MemberSchema.statics = {
     const limit = options.limit || 50;
     return this.find(params)
     .or([{ title }, { name: title }])
+    .sort({order: 1})
     .limit(limit)
     .skip(limit * page)
     .lean()
