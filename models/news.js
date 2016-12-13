@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const NewsSchema = new Schema({
   title: { type: String, default: '' },
   type: { type: String },
-  logo: { type: String, default: '', trim: true },
+  logo: { type: Array, default: [] },
   label: { type: String, default: '', trim: true },
   link: { type: String, default: '', trim: true },
   content: { type: String, default: '' },
